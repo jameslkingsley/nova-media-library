@@ -2,9 +2,9 @@
 This field is designed to be used with the [media library package from Spatie](https://github.com/spatie/laravel-medialibrary). It currently only supports single file uploading. Take a look at the example usage below:
 
 ```php
-use Kingsley\MediaLibraryImage\MediaLibraryImage;
+use Kingsley\MediaLibraryField\MediaLibraryField;
 
-MediaLibraryImage::make('Avatar')
+MediaLibraryField::make('Avatar')
     ->usingConversion('thumb')
     ->preservingOriginal()
     ->toMediaCollection('avatar')
