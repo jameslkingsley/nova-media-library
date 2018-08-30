@@ -1,5 +1,5 @@
 {
-    "name": "jameslkingsley/media-library-image",
+    "name": "jameslkingsley/nova-media-library-field",
     "description": "A Laravel Nova field for displaying and updating a Spatie Media Library model.",
     "keywords": [
         "laravel",
