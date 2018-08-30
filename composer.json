@@ -11,13 +11,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Kingsley\\MediaLibraryImage\\": "src/"
+            "Kingsley\\MediaLibraryField\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Kingsley\\MediaLibraryImage\\MediaLibraryImageServiceProvider"
+                "Kingsley\\MediaLibraryField\\MediaLibraryFieldServiceProvider"
             ]
         }
     },

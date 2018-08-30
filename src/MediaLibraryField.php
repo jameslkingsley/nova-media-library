@@ -1,18 +1,18 @@
 <?php
 
-namespace Kingsley\MediaLibraryImage;
+namespace Kingsley\MediaLibraryField;
 
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class MediaLibraryImage extends Field
+class MediaLibraryField extends Field
 {
     /**
      * The field's component.
      *
      * @var string
      */
-    public $component = 'media-library-image';
+    public $component = 'media-library-field';
 
     /**
      * Hydrate the given attribute on the model based on the incoming request.
@@ -49,12 +49,12 @@ class MediaLibraryImage extends Field
      */
     protected function resolveAttribute($resource, $attribute)
     {
-        return url(
-            $resource->getFirstMediaUrl(
-                $this->meta()['ml_toMediaCollection'][0],
-                $this->meta()['usingConversion']
-            )
+        $media = $resource->getFirstMediaUrl(
+            $this->meta()['ml_toMediaCollection'][0],
+            $this->meta()['usingConversion']
         );
+
+        return $media ? url($media) : null;
     }
 
     /**

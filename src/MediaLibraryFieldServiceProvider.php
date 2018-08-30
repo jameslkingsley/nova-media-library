@@ -1,12 +1,12 @@
 <?php
 
-namespace Kingsley\MediaLibraryImage;
+namespace Kingsley\MediaLibraryField;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\ServiceProvider;
 
-class MediaLibraryImageServiceProvider extends ServiceProvider
+class MediaLibraryFieldServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
@@ -16,8 +16,8 @@ class MediaLibraryImageServiceProvider extends ServiceProvider
     public function boot()
     {
         Nova::serving(function (ServingNova $event) {
-            Nova::script('media-library-image', __DIR__.'/../dist/js/field.js');
-            Nova::style('media-library-image', __DIR__.'/../dist/css/field.css');
+            Nova::script('media-library-field', __DIR__.'/../dist/js/field.js');
+            Nova::style('media-library-field', __DIR__.'/../dist/css/field.css');
         });
     }
 
