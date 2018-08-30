@@ -1,0 +1,29 @@
+{
+    "name": "kingsley/media-library-image",
+    "description": "A Laravel Nova field for displaying and updating a Spatie Media Library model.",
+    "keywords": [
+        "laravel",
+        "nova"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kingsley\\MediaLibraryImage\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kingsley\\MediaLibraryImage\\MediaLibraryImageServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
