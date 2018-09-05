@@ -1,6 +1,6 @@
 {
-    "name": "jameslkingsley/nova-media-library-field",
-    "description": "A Laravel Nova field for displaying and updating a Spatie Media Library model.",
+    "name": "jameslkingsley/nova-media-library",
+    "description": "Laravel Nova tools for managing the Spatie media library.",
     "keywords": [
         "laravel",
         "nova"
@@ -11,13 +11,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Kingsley\\MediaLibraryField\\": "src/"
+            "Kingsley\\NovaMediaLibrary\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Kingsley\\MediaLibraryField\\MediaLibraryFieldServiceProvider"
+                "Kingsley\\NovaMediaLibrary\\NovaMediaLibraryServiceProvider"
             ]
         }
     },

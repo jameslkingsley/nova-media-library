@@ -1,18 +1,23 @@
 <?php
 
-namespace Kingsley\MediaLibraryField;
+namespace Kingsley\NovaMediaLibrary\Fields;
 
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\Deletable;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Contracts\Deletable as DeletableContract;
 
-class MediaLibraryField extends Field
+class Image extends Field implements DeletableContract
 {
+    use Deletable;
+
     /**
      * The field's component.
      *
      * @var string
      */
-    public $component = 'media-library-field';
+    public $component = 'nova-media-library-image-field';
 
     /**
      * Hydrate the given attribute on the model based on the incoming request.
@@ -111,5 +116,17 @@ class MediaLibraryField extends Field
     public function __call($method, $arguments)
     {
         return $this->withMeta(['ml_' . $method => $arguments]);
+    }
+
+    /**
+     * Get additional meta information to merge with the element payload.
+     *
+     * @return array
+     */
+    public function meta()
+    {
+        return array_merge([
+            'deletable' => isset($this->deleteCallback) && $this->deletable
+        ], $this->meta);
     }
 }

@@ -1,32 +1,34 @@
-# Media Library Field
-This field is designed to be used with the [media library package from Spatie](https://github.com/spatie/laravel-medialibrary). It currently only supports single file uploading. Take a look at the example usage below:
+# Laravel Nova Media Library
+This package is designed to be used with the [awesome media library package from Spatie](https://github.com/spatie/laravel-medialibrary). With this package you can add an image field for uploading single files to a resource, and add an images field to resources to display all of their associated media.
 
 ```php
-use Kingsley\MediaLibraryField\MediaLibraryField;
+use Kingsley\NovaMediaLibrary\Fields\Image;
 
-MediaLibraryField::make('Avatar')
+Image::make('Avatar')
     ->usingConversion('thumb')
     ->preservingOriginal()
     ->toMediaCollection('avatar')
 ```
 
-In this example we're defining a field called `Avatar` that uses the `thumb` conversion as the image to be displayed (on detail and index). The other methods called are **dynamically** applied to the upload request - **this lets you call any media-library method on the field.** When updating the field above it will store the image like this:
+In this example we're defining a field called `Avatar` that uses the `thumb` conversion as the image to be displayed (on detail and index). The other methods called are **dynamically** applied to the upload request - **this lets you call any media-library method on the field.**.
+
+If you want it to remove the old image before uploading the new one, be sure to make your model's media collection a [single file collection](https://docs.spatie.be/laravel-medialibrary/v7/working-with-media-collections/defining-media-collections#single-file-collections).
+
+To show all media records for your resource simply add the `Images` field like so:
 
 ```php
-// Must be uploading an image
-$request->validate([
-    $requestAttribute => 'image'
-]);
+use Kingsley\NovaMediaLibrary\Fields\Images;
 
-// Kick off the media-library process
-$query = $model->addMedia($request[$requestAttribute]);
+public function fields(Request $request)
+{
+    return [
+        ...
 
-// Call any of the media-library methods on the query
-foreach ($request->all() as $key => $value) {
-    if (starts_with($key, 'ml_')) {
-        $method = substr($key, 3);
-        $arguments = is_array($value) ? $value : [$value];
-        $query->$method(...$arguments);
-    }
+        Images::make(),
+    ];
 }
 ```
+
+This will automatically use the `media` attribute on your model (which the `HasMediaTrait` adds).
+
+**Note: You currently cannot create media directly from Nova.**

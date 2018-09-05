@@ -1,7 +1,7 @@
 let mix = require('laravel-mix')
 
-mix.js('resources/js/field.js', 'dist/js')
-   .sass('resources/sass/field.scss', 'dist/css')
+mix.js('resources/js/app.js', 'dist/js')
+    .sass('resources/sass/app.scss', 'dist/css')
     .webpackConfig({
         resolve: {
             symlinks: false

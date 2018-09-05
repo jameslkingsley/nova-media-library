@@ -83,7 +83,7 @@ export default {
 
     data: () => ({
         file: null,
-        label: 'no file selected',
+        label: 'No file selected',
         fileName: '',
         removeModalOpen: false,
         missing: false,
