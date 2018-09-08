@@ -30,17 +30,20 @@ class Image extends Field implements DeletableContract
      */
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
     {
-        $request->validate([
-            $requestAttribute => 'image'
-        ]);
+        if(isset($request[$requestAttribute]) && !empty($request[$requestAttribute])) {
 
-        $query = $model->addMedia($request[$requestAttribute]);
+            $request->validate([
+                $requestAttribute => 'image'
+            ]);
 
-        foreach ($request->all() as $key => $value) {
-            if (starts_with($key, 'ml_')) {
-                $method = substr($key, 3);
-                $arguments = is_array($value) ? $value : [$value];
-                $query->$method(...$arguments);
+            $query = $model->addMedia($request[$requestAttribute]);
+
+            foreach ($request->all() as $key => $value) {
+                if (starts_with($key, 'ml_')) {
+                    $method = substr($key, 3);
+                    $arguments = is_array($value) ? $value : [$value];
+                    $query->$method(...$arguments);
+                }
             }
         }
     }
