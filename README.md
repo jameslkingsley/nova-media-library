@@ -32,3 +32,12 @@ public function fields(Request $request)
 This will automatically use the `media` attribute on your model (which the `HasMediaTrait` adds).
 
 **Note: You currently cannot create media directly from Nova.**
+
+#### Registering the media resource
+If you'd like to use the media resource included with this package, you need to register it manually in your `NovaServiceProvider` in the `boot` method.
+
+```php
+Nova::resources([
+    \Kingsley\NovaMediaLibrary\Resources\Media::class
+]);
+```

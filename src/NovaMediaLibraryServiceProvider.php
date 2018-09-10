@@ -20,10 +20,6 @@ class NovaMediaLibraryServiceProvider extends ServiceProvider
     public function boot()
     {
         Nova::serving(function (ServingNova $event) {
-            Nova::resources([
-                \Kingsley\NovaMediaLibrary\Resources\Media::class
-            ]);
-
             Nova::script('nova-media-library', __DIR__.'/../dist/js/app.js');
             Nova::style('nova-media-library', __DIR__.'/../dist/css/app.css');
         });
