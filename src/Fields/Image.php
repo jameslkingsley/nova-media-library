@@ -48,7 +48,7 @@ class Image extends Field implements DeletableContract
             }
         }
 
-        if (!$request->has('md_toMediaCollection')) {
+        if (!$request->has('ml_toMediaCollection')) {
             $query->toMediaCollection();
         }
     }
