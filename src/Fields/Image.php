@@ -58,12 +58,21 @@ class Image extends Field implements DeletableContract
      */
     protected function resolveAttribute($resource, $attribute)
     {
-        $media = $resource->getFirstMediaUrl(
-            $this->meta()['ml_toMediaCollection'][0],
-            $this->meta()['usingConversion']
-        );
+        $collection = $this->meta()['ml_toMediaCollection'][0] ?? null;
+        $conversion = $this->meta()['usingConversion'] ?? [];
+        $media = $resource->getFirstMedia($collection);
 
-        return $media ? url($media) : null;
+        if (empty($media)) {
+            return null;
+        }
+
+        if ($media->hasGeneratedConversion($conversion)) {
+            $media = $media->getUrl($conversion);
+        } else {
+            $media = $media->getUrl();
+        }
+
+        return url($media);
     }
 
     /**
