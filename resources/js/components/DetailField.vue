@@ -17,7 +17,7 @@
             },
 
             width() {
-                return this.field.width || '12rem'
+                return this.field.width || 'auto'
             },
 
             height() {
