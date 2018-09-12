@@ -7,8 +7,12 @@
                 </template>
 
                 <template v-if="field.value && !field.thumbnailUrl">
-                    <card class="flex item-center relative border border-lg border-50 overflow-hidden p-4">
-                        {{ field.value }}
+                    <div class="flex item-center relative overflow-hidden p-4">
+                        <img
+                            class="rounded"
+                            v-if="field.value"
+                            :src="field.value"
+                            :style="{ width: field.width, height: field.height }">
 
                         <DeleteButton
                             :dusk="field.attribute + '-internal-delete-link'"
@@ -16,7 +20,7 @@
                             v-if="shouldShowRemoveButton"
                             @click="confirmRemoval"
                         />
-                    </card>
+                    </div>
                 </template>
 
                 <p
