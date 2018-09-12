@@ -101,8 +101,6 @@ export default {
                 }
             }
         }
-
-        console.log(this.field)
     },
 
     methods: {
