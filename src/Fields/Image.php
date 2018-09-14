@@ -2,6 +2,7 @@
 
 namespace Kingsley\NovaMediaLibrary\Fields;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\Deletable;
@@ -18,6 +19,20 @@ class Image extends Field implements DeletableContract
      * @var string
      */
     public $component = 'nova-media-library-image-field';
+
+    /**
+     * Create a new field.
+     *
+     * @return void
+     */
+    public function __construct(...$arguments)
+    {
+        parent::__construct(...$arguments);
+
+        $this->delete(function () {
+            //
+        });
+    }
 
     /**
      * Hydrate the given attribute on the model based on the incoming request.
@@ -66,17 +81,17 @@ class Image extends Field implements DeletableContract
         $conversion = $this->meta()['usingConversion'] ?? [];
         $media = $resource->getFirstMedia($collection);
 
-        if (empty($media)) {
-            return null;
+        if ($media) {
+            if ($media->hasGeneratedConversion($conversion)) {
+                $media->preview_url = url($media->getUrl($conversion));
+            } else {
+                $media->preview_url = url($media->getUrl());
+            }
+
+            return $media;
         }
 
-        if ($media->hasGeneratedConversion($conversion)) {
-            $media = $media->getUrl($conversion);
-        } else {
-            $media = $media->getUrl();
-        }
-
-        return url($media);
+        return null;
     }
 
     /**

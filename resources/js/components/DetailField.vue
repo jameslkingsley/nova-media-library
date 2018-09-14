@@ -13,7 +13,7 @@
 
         computed: {
             url() {
-                return this.field.value
+                return this.field.value.preview_url
             },
 
             width() {
@@ -22,7 +22,7 @@
 
             height() {
                 return this.field.height || '12rem'
-            }
-        }
+            },
+        },
     }
 </script>

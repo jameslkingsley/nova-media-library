@@ -156,10 +156,7 @@
 
                 const { resourceName, resourceId, relatedResourceName, relatedResourceId, viaRelationship } = this
                 const attribute = this.field.attribute
-
-                const uri = this.viaRelationship
-                    ? `/nova-api/${resourceName}/${resourceId}/${relatedResourceName}/${relatedResourceId}/field/${attribute}?viaRelationship=${viaRelationship}`
-                    : `/nova-api/${resourceName}/${resourceId}/field/${attribute}`
+                const uri = `/nova-vendor/jameslkingsley/nova-media-library/${this.field.value.id}`
 
                 try {
                     await Nova.request().delete(uri)
@@ -178,7 +175,7 @@
 
         computed: {
             imageUrl() {
-                return this.previewUrl ? this.previewUrl : this.field.value
+                return this.previewUrl ? this.previewUrl : this.field.value.preview_url
             },
 
             hasError() {

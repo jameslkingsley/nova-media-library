@@ -4,21 +4,22 @@
 </template>
 
 <script>
-export default {
-    props: ['resourceName', 'field'],
+    export default {
+        props: ['resourceName', 'field'],
 
-    computed: {
-        url() {
-            return this.field.value
+        computed: {
+            url() {
+                return this.field.value.preview_url
+            },
+
+            style() {
+                return {
+                    backgroundImage: `url(${this.url})`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: '50%',
+                    backgroundSize: 'cover',
+                }
+            },
         },
-        style() {
-            return {
-              backgroundImage: `url(${this.url})`,
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: '50%',
-              backgroundSize: 'cover'
-            }
-        }
-    },
-}
+    }
 </script>
