@@ -9,7 +9,7 @@
 
         computed: {
             url() {
-                return this.field.value.preview_url
+                return this.field.value ? this.field.value.preview_url : null
             },
 
             style() {
