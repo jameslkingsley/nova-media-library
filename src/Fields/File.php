@@ -9,7 +9,7 @@ use Laravel\Nova\Fields\Deletable;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Contracts\Deletable as DeletableContract;
 
-class Image extends Field implements DeletableContract
+class File extends Field implements DeletableContract
 {
     use Deletable;
 
@@ -18,7 +18,7 @@ class Image extends Field implements DeletableContract
      *
      * @var string
      */
-    public $component = 'nova-media-library-image-field';
+    public $component = 'nova-media-library-file-field';
 
     /**
      * The media collection.
@@ -59,7 +59,7 @@ class Image extends Field implements DeletableContract
         }
 
         $request->validate([
-            $requestAttribute => 'image'
+            $requestAttribute => 'file'
         ]);
 
         $query = $model->addMedia($request[$requestAttribute]);
@@ -84,66 +84,9 @@ class Image extends Field implements DeletableContract
      */
     protected function resolveAttribute($resource, $attribute)
     {
-        $conversion = $this->meta()['usingConversion'] ?? [];
         $media = $resource->getFirstMedia($this->mediaCollection);
 
-        if ($media) {
-            if ($media->hasGeneratedConversion($conversion)) {
-                $media->preview_url = url($media->getUrl($conversion));
-            } else {
-                $media->preview_url = url($media->getUrl());
-            }
-
-            return $media;
-        }
-
-        return null;
-    }
-
-    /**
-     * Set the width of the image.
-     * Accepts CSS values (100px, 10rem, 10% etc.)
-     *
-     * @return $this
-     */
-    public function width($value)
-    {
-        return $this->withMeta(['width' => $value]);
-    }
-
-    /**
-     * Set the height of the image.
-     * Accepts CSS values (100px, 10rem, 10% etc.)
-     *
-     * @return $this
-     */
-    public function height($value)
-    {
-        return $this->withMeta(['height' => $value]);
-    }
-
-    /**
-     * Set the width and height of the image.
-     * Accepts CSS values (100px, 10rem, 10% etc.)
-     *
-     * @return $this
-     */
-    public function size(string $value)
-    {
-        return $this->withMeta([
-            'width' => $value,
-            'height' => $value,
-        ]);
-    }
-
-    /**
-     * Defines what conversion to use when displaying the image.
-     *
-     * @return $this
-     */
-    public function usingConversion(string $name)
-    {
-        return $this->withMeta(['usingConversion' => $name]);
+        return $media ?? null;
     }
 
     /**

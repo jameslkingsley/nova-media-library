@@ -8,14 +8,7 @@
 
                 <template v-if="field.value && !field.thumbnailUrl">
                     <div class="flex item-center relative overflow-hidden">
-                        <img
-                            class="rounded"
-                            v-if="field.value"
-                            :src="imageUrl"
-                            :style="{
-                                width: field.width || 'auto',
-                                height: field.height || '12rem',
-                            }" />
+                        <span v-if="field.value">{{ field.value.name }}</span>
 
                         <DeleteButton
                             :dusk="field.attribute + '-internal-delete-link'"
@@ -79,12 +72,11 @@
 </template>
 
 <script>
-    import ImageLoader from '../../../../../nova/resources/js/components/ImageLoader'
-    import DeleteButton from '../../../../../nova/resources/js/components/DeleteButton'
+    import DeleteButton from '../../../../../../nova/resources/js/components/DeleteButton'
     import { FormField, HandlesValidationErrors, Errors } from 'laravel-nova'
 
     export default {
-        components: { DeleteButton, ImageLoader },
+        components: { DeleteButton },
         mixins: [HandlesValidationErrors, FormField],
         props: ['resourceId', 'relatedResourceName', 'relatedResourceId', 'viaRelationship', 'resourceName', 'field'],
 
@@ -96,20 +88,7 @@
             missing: false,
             deleted: false,
             uploadErrors: new Errors(),
-            previewUrl: null,
         }),
-
-        watch: {
-            file(value) {
-                let reader = new FileReader()
-
-                reader.onload = event => {
-                    this.previewUrl = event.target.result
-                }
-
-                reader.readAsDataURL(value)
-            },
-        },
 
         mounted() {
             this.field.fill = formData => {
@@ -174,10 +153,6 @@
         },
 
         computed: {
-            imageUrl() {
-                return this.previewUrl ? this.previewUrl : this.field.value.preview_url
-            },
-
             hasError() {
                 return this.errors.has(this.fieldAttribute) || this.uploadErrors.has(this.fieldAttribute)
             },
