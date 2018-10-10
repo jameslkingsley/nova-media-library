@@ -84,7 +84,7 @@ class Image extends Field implements DeletableContract
      */
     protected function resolveAttribute($resource, $attribute)
     {
-        $conversion = $this->meta()['usingConversion'] ?? [];
+        $conversion = $this->meta()['usingConversion'] ?? '';
         $media = $resource->getFirstMedia($this->mediaCollection);
 
         if ($media) {
