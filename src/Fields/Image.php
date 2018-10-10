@@ -85,7 +85,20 @@ class Image extends Field implements DeletableContract
     protected function resolveAttribute($resource, $attribute)
     {
         $conversion = $this->meta()['usingConversion'] ?? [];
-        $media = $resource->getFirstMedia($this->mediaCollection);
+        $customProperties = $this->meta()['ml_withCustomProperties'] ?? [];
+        $media = $resource->getMedia($this->mediaCollection);
+        
+        if (!empty($customProperties)) {
+            $customProperties = array_first($customProperties) ?: [];
+            $media = $media->first(function ($image) use ($customProperties) {
+                foreach ($customProperties as $property => $value) {
+                    $valid = ($valid ?? true) && ($image->getCustomProperty($property) == $value);
+                }
+                return $valid ?? false;
+            });
+        } else {
+            $media = $media->first();
+        }
 
         if ($media) {
             if ($media->hasGeneratedConversion($conversion)) {
