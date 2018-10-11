@@ -86,7 +86,7 @@ abstract class MediaField extends Field implements DeletableContract
      */
     protected function resolveAttribute($resource, $attribute)
     {
-        $customProperties = $this->mediaLibraryMethods['withCustomProperties'] ?? [];
+        $customProperties = $this->mediaLibraryMethods['withCustomProperties'] ?? '';
         $media = $resource->getMedia($this->mediaCollection);
 
         if (!empty($customProperties)) {
