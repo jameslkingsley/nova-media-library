@@ -2,17 +2,10 @@
 
 namespace Kingsley\NovaMediaLibrary\Fields;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Field;
-use Laravel\Nova\Fields\Deletable;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Contracts\Deletable as DeletableContract;
 
-class Image extends Field implements DeletableContract
+class Image extends MediaField
 {
-    use Deletable;
-
     /**
      * The field's component.
      *
@@ -21,59 +14,11 @@ class Image extends Field implements DeletableContract
     public $component = 'nova-media-library-image-field';
 
     /**
-     * The media collection.
+     * The validation rules.
      *
-     * @var string
+     * @var array
      */
-    public $mediaCollection;
-
-    /**
-     * Create a new field.
-     *
-     * @return void
-     */
-    public function __construct(string $name, string $collection = 'default')
-    {
-        parent::__construct($name);
-
-        $this->mediaCollection = $collection;
-
-        $this->delete(function () {
-            //
-        });
-    }
-
-    /**
-     * Hydrate the given attribute on the model based on the incoming request.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  string  $requestAttribute
-     * @param  object  $model
-     * @param  string  $attribute
-     * @return void
-     */
-    protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
-    {
-        if (! $request[$requestAttribute]) {
-            return;
-        }
-
-        $request->validate([
-            $requestAttribute => 'image'
-        ]);
-
-        $query = $model->addMedia($request[$requestAttribute]);
-
-        foreach ($request->all() as $key => $value) {
-            if (starts_with($key, 'ml_')) {
-                $method = substr($key, 3);
-                $arguments = is_array($value) ? $value : [$value];
-                $query->$method(...$arguments);
-            }
-        }
-
-        $query->toMediaCollection($this->mediaCollection);
-    }
+    protected $validationRules = ['image'];
 
     /**
      * Resolve the given attribute from the given resource.
@@ -84,21 +29,9 @@ class Image extends Field implements DeletableContract
      */
     protected function resolveAttribute($resource, $attribute)
     {
-        $conversion = $this->meta()['usingConversion'] ?? '';
-        $customProperties = $this->meta()['ml_withCustomProperties'] ?? [];
-        $media = $resource->getMedia($this->mediaCollection);
-        
-        if (!empty($customProperties)) {
-            $customProperties = array_first($customProperties) ?: [];
-            $media = $media->first(function ($image) use ($customProperties) {
-                foreach ($customProperties as $property => $value) {
-                    $valid = ($valid ?? true) && ($image->getCustomProperty($property) == $value);
-                }
-                return $valid ?? false;
-            });
-        } else {
-            $media = $media->first();
-        }
+        $media = parent::resolveAttribute($resource, $attribute);
+
+        $conversion = $this->meta()['usingConversion'] ?? [];
 
         if ($media) {
             if ($media->hasGeneratedConversion($conversion)) {
@@ -106,11 +39,9 @@ class Image extends Field implements DeletableContract
             } else {
                 $media->preview_url = url($media->getUrl());
             }
-
-            return $media;
         }
 
-        return null;
+        return $media;
     }
 
     /**
@@ -166,7 +97,9 @@ class Image extends Field implements DeletableContract
      */
     public function __call($method, $arguments)
     {
-        return $this->withMeta(['ml_' . $method => $arguments]);
+        $this->mediaLibraryMethods[$method] = $arguments;
+
+        return $this;
     }
 
     /**
