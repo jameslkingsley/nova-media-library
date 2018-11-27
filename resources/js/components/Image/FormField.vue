@@ -114,12 +114,6 @@
         mounted() {
             this.field.fill = formData => {
                 formData.append(this.field.attribute, this.file, this.fileName)
-
-                for (let attribute in this.field) {
-                    if (attribute.substr(0, 3) === 'ml_') {
-                        formData.append(attribute, this.field[attribute])
-                    }
-                }
             }
         },
 
