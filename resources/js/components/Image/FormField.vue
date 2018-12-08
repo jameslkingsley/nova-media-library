@@ -90,7 +90,7 @@
 
         data: () => ({
             file: null,
-            label: 'No file selected',
+            label: null,
             fileName: '',
             removeModalOpen: false,
             missing: false,
@@ -112,6 +112,7 @@
         },
 
         mounted() {
+            this.label = this.__('No file selected');
             this.field.fill = formData => {
                 formData.append(this.field.attribute, this.file, this.fileName)
             }
