@@ -31,7 +31,7 @@ class Image extends MediaField
     {
         $media = parent::resolveAttribute($resource, $attribute);
 
-        $conversion = $this->meta()['usingConversion'] ?? [];
+        $conversion = $this->meta()['usingConversion'] ?? '';
 
         if ($media) {
             if ($media->hasGeneratedConversion($conversion)) {
