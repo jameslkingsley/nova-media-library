@@ -1,5 +1,7 @@
 # Laravel Nova Media Library
 
+## Attention: Please consider using [this package](https://github.com/ebess/advanced-nova-media-library) instead, it has a lot more support for various medialibrary features, and will probably fit your needs better!
+
 This package is designed to be used with the [awesome media library package from Spatie](https://github.com/spatie/laravel-medialibrary). With this package you can add an image field for uploading single files to a resource, a generic file field for other types, and add an images field to resources to display all of their associated media.
 
 ```php
